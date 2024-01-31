@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('interactions', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->foreignUuid('customer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('description');
             $table->timestamps();
