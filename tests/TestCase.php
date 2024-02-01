@@ -2,8 +2,11 @@
 
 namespace Tests;
 
+use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Schema;
+use JWTAuth;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -35,6 +38,18 @@ abstract class TestCase extends BaseTestCase
 
         static::assertThat($class, $constraint,
             "{$class} does not have relation `{$method}` of type `{$relationType}`");
+    }
+
+    protected function login(?Authenticatable $authenticatable = null): Authenticatable
+    {
+        $authenticatable ??= User::factory()->create();
+
+        $token = JWTAuth::fromUser($authenticatable);
+        $this->token = $token;
+        $this->withHeaders(['Authorization' => 'Bearer ' . $token]);
+        $this->actingAs($authenticatable);
+
+        return $authenticatable;
     }
 
 }
