@@ -17,8 +17,11 @@ In order to run this demo project you should follow these steps
 - Rebuild Docker containers `user@machine:/mnt/c/cactus$ ./vendor/bin/sail build --no-cache`
 - Start the Docker containers `user@machine:/mnt/c/cactus$ ./vendor/bin/sail up -d`
 - Install the project dependencies `user@machine:/mnt/c/cactus$ ./vendor/bin/sail composer install`
+- Install Bootstrap `user@machine:/mnt/c/cactus$ ./vendor/bin/sail artisan ui bootstrap`
+- Install the NPM dependencies `user@machine:/mnt/c/cactus$ ./vendor/bin/sail npm install`
+- Build the Bootstrap assets `user@machine:/mnt/c/cactus$ ./vendor/bin/sail npm run build`
 - Seed the database with the admin user `user@machine:/mnt/c/cactus$ ./vendor/bin/sail artisan db:seed`
-- Optionally you can configure a shell alias to the sail sacript. To do so execute this command in the root folder of the project in WSL `alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'`
+- Optionally you can configure a shell alias to the sail script. To do so execute this command in the root folder of the project in WSL `alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'`
 
 Now you can test the project in http://localhost
 

@@ -18,6 +18,7 @@
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
+        "laravel/ui": "^4.4",
         "mockery/mockery": "^1.4.4",
         "mohammedmanssour/form-request-tester": "^1.2",
         "nunomaduro/collision": "^7.0",
