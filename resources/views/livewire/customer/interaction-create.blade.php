@@ -1,9 +1,6 @@
 <div class="card mt-5">
     <h5 class="card-header">New interaction for {{$customer->name}}</h5>
     <div class="card-body">
-        <div class="row">
-
-        </div>
         <form wire:submit="store">
             <div class="mb-3">
                 <label for="descriptionInput" class="form-label">Description :</label>

@@ -12,6 +12,8 @@ class Customer extends Model
     use HasFactory;
     use HasUuids;
 
+    protected $guarded = [];
+
     public function interactions(): HasMany
     {
         return $this->hasMany(Interaction::class);

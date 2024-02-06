@@ -27,9 +27,9 @@ class InteractionIndex extends Component
         ]);
     }
 
-    public function delete(string $id)
+    public function delete(string $interactionId)
     {
-        $interaction = Interaction::find($id);
+        $interaction = Interaction::find($interactionId);
         $interaction->delete();
     }
 }
