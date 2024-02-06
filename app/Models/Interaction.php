@@ -12,6 +12,8 @@ class Interaction extends Model
     use HasFactory;
     use HasUuids;
 
+    protected $guarded = [];
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Auth;
 
+use App\Constants\RouteNames;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use Auth;
+use Illuminate\Http\Request;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Session;
@@ -22,10 +24,10 @@ class Login extends Component
 
     public function render()
     {
-        return view('livewire.login');
+        return view('livewire.auth.login');
     }
 
-    public function login()
+    public function login(Request $request)
     {
         $this->validate();
 
@@ -35,11 +37,11 @@ class Login extends Component
         ];
 
         if (Auth::guard('web')->attempt($credentials)){
-            $user = Auth::user();
-            $token = Auth::guard('api')->tokenById($user->getKey());
+            $request->session()->regenerate();
+            $token = Auth::guard('api')->attempt($credentials);
             Session::put('apiToken', $token);
 
-            return redirect()->route('dashboard');
+            return redirect()->route(RouteNames::WEB_DASHBOARD);
         } else {
             Session::flash('error', 'Invalid credentials.');
         }

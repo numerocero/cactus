@@ -18,7 +18,7 @@ class CustomerResource extends JsonResource
             'id'    => $this->resource->getRouteKey(),
             'name'  => $this->resource->name,
             'email' => $this->resource->email,
-            'last_interaction_date' => $this->resource->interactions->first()?->created_at,
+            'last_interaction_date' => $this->resource->interactions->first()?->created_at->toDateTimeString(),
         ];
     }
 }

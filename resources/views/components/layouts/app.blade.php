@@ -11,9 +11,11 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
         @vite(['resources/js/app.js'])
-
     </head>
-    <body>
-        {{ $slot }}
+    <body class="bg-body-secondary">
+        <div class="container bg">
+            {{ $slot }}
+        </div>
     </body>
+    @stack('scripts')
 </html>
