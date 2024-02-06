@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Constants\RouteNames;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,6 @@ class Authenticate extends Middleware
             return null;
         }
 
-        return $request->expectsJson() ? null : route('login');
+        return $request->expectsJson() ? null : route(RouteNames::WEB_AUTH_LOGIN);
     }
 }

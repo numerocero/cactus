@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Constants\RequestKeys;
-use App\Handlers\Auth\LoginHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use App\Http\Resources\Api\Auth\BaseResource;
 use Auth;
+use Config;
+use Cookie;
 use Illuminate\Validation\ValidationException;
+use Lang;
 use Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
@@ -19,11 +21,24 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $loginHandler = new LoginHandler();
-        $loginHandler->handle($request->get(RequestKeys::EMAIL), $request->get(RequestKeys::PASSWORD));
+        $credentials = [
+            'email'    => $request->get(RequestKeys::EMAIL),
+            'password' => $request->get(RequestKeys::PASSWORD),
+        ];
 
-        return (new BaseResource($loginHandler->getUser(), $loginHandler->getToken()))->response()
-            ->cookie($loginHandler->getCookie())
+        $token = Auth::attempt($credentials);
+        if (!$token) {
+            throw ValidationException::withMessages([
+                RequestKeys::PASSWORD => [Lang::get('auth.failed')],
+            ]);
+        }
+
+        $user = Auth::user();
+
+        $refreshToken = Auth::setTTL(Config::get('jwt.refresh_ttl'))->tokenById($user->getKey());
+        $cookie       = Cookie::make('jwt', $refreshToken, Config::get('jwt.refresh_ttl'), null, null, false);
+
+        return (new BaseResource($user, $token))->response()->cookie($cookie)
             ->setStatusCode(HttpResponse::HTTP_CREATED);
     }
 
