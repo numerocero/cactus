@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
-use App\Handlers\Auth\LoginHandler;
 use App\Http\Requests\Api\Auth\LoginRequest;
-use Illuminate\Validation\ValidationException;
+use Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Session;
 
 class Login extends Component
 {
@@ -28,14 +28,20 @@ class Login extends Component
     public function login()
     {
         $this->validate();
-        $loginHandler = new LoginHandler();
 
-        try {
-            $loginHandler->handle($this->email, $this->password);
-        } catch (ValidationException $exception) {
-            session()->flash('error', 'Incorrect email or password.');
+        $credentials = [
+            'email'    => $this->email,
+            'password' => $this->password,
+        ];
+
+        if (Auth::guard('web')->attempt($credentials)){
+            $user = Auth::user();
+            $token = Auth::guard('api')->tokenById($user->getKey());
+            Session::put('apiToken', $token);
+
+            return redirect()->route('dashboard');
+        } else {
+            Session::flash('error', 'Invalid credentials.');
         }
-
-        session()->flash('message', "You are successfully logged in.");
     }
 }
